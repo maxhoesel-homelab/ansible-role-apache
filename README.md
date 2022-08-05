@@ -24,15 +24,15 @@ The repository to use when installing Apache (only used on RHEL/CentOS systems).
 
 The IP address and ports on which apache should be listening. Useful if you have another service (like a reverse proxy) listening on port 80 or 443 and need to change the defaults.
 
-    apache_create_vhosts: true
+    apache_create_vhosts: false
     apache_vhosts_filename: "vhosts.conf"
     apache_vhosts_template: "vhosts.conf.j2"
 
 If set to true, a vhosts file, managed by this role's variables (see below), will be created and placed in the Apache configuration folder. If set to false, you can place your own vhosts file into Apache's configuration folder and skip the convenient (but more basic) one added by this role. You can also override the template used and set a path to your own template, if you need to further customize the layout of your VirtualHosts.
 
-    apache_remove_default_vhost: false
+    apache_remove_default_vhost: true
 
-On Debian/Ubuntu, a default virtualhost is included in Apache's configuration. Set this to `true` to remove that default virtualhost configuration file.
+On Debian/Ubuntu, a default virtualhost is included in Apache's configuration. Set this to `false` to preserve that default virtualhost configuration file.
 
     apache_global_vhost_settings: |
       DirectoryIndex index.php index.html
@@ -40,10 +40,7 @@ On Debian/Ubuntu, a default virtualhost is included in Apache's configuration. S
 
 You can add or override global Apache configuration settings in the role-provided vhosts file (assuming `apache_create_vhosts` is true) using this variable. By default it only sets the DirectoryIndex configuration.
 
-    apache_vhosts:
-      # Additional optional properties: 'serveradmin, serveralias, extra_parameters'.
-      - servername: "local.dev"
-        documentroot: "/var/www/html"
+    apache_vhosts: []
 
 Add a set of properties per virtualhost, including `servername` (required), `documentroot` (required), `allow_override` (optional: defaults to the value of `apache_allow_override`), `options` (optional: defaults to the value of `apache_options`), `serveradmin` (optional), `serveralias` (optional) and `extra_parameters` (optional: you can add whatever additional configuration lines you'd like in here).
 
