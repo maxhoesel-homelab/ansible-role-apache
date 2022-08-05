@@ -1,0 +1,5 @@
+apache_homelab_mods:
+  - status.load
+apache_homelab_status_vhost_template: server-status.conf.j2
+apache_homelab_status_vhost_file: server-status.conf
+apache_homelab_status_port: 10055

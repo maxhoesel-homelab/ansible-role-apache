@@ -9,6 +9,17 @@
   with_items: "{{ apache_ports_configuration_items }}"
   notify: restart apache
 
+- name: Configure status listening port
+  blockinfile:
+    path: "{{ apache_server_root }}/{{ apache_daemon }}.conf"
+    block: |
+      <IfModule status_module>
+              Listen {{ apache_homelab_status_port }}
+      </IfModule>
+    state: present
+    mode: 0644
+  notify: restart apache
+
 - name: Add apache vhosts configuration.
   template:
     src: "{{ apache_vhosts_template }}"
@@ -18,3 +29,12 @@
     mode: 0644
   notify: restart apache
   when: apache_create_vhosts | bool
+
+- name: Add server-status vhost
+  template:
+    src: "{{ apache_homelab_status_vhost_template }}"
+    dest: "{{ apache_conf_path }}/{{ apache_homelab_status_vhost_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart apache
